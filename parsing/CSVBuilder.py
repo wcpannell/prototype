@@ -2,29 +2,24 @@ import csv
 
 #This class will take a dictionary of strings and integers and transform it into a CSV file with the correct converted metric names.
 class CSVBuilder:
-    correctFormat = True
-    fname = ''
-    myDict = {}
 
     #Constructor for the class.  Accept a filename as a string, and a dictionary.
     #First, if the dictionary is not in the correct format (all keys are strings, and all values are integers),
     #then set the correctFormat boolean to False, for when the build function is run.  Then, store the parameters
     #in their corresponding global variables.
     def __init__(self, filename: str, table: dict):
-        global correctFormat, fname, myDict
-        correctFormat = True
+        self.correctFormat = True
         for x in table.keys():
             if not isinstance(x, str):
-                correctFormat = False
+                self.correctFormat = False
             if not isinstance(table[x], int):
-                correctFormat = False
-        fname = filename
-        myDict = table
+                self.correctFormat = False
+        self.fname = filename
+        self.myDict = table
 
     #This function will build the CSV file and return an integer value.
     #It will return 0 if it ran successfully, and 1 if it failed.
     def build(self):
-        global myDict
         cDict = {'NOL':'Number of Lines',
                  'NOC':'Number of Comments',
                  'CPES':'Ratio of comment Line to the executable statements',
@@ -55,12 +50,13 @@ class CSVBuilder:
 
         #If the dictionary was determined to be of the correct format, then convert the keys
         #to their corresponding metric names, and write to a file.
-        if correctFormat:
-            with open(fname,"a+") as f:
-                for k in myDict:
+        if self.correctFormat:
+            with open(self.fname,"a+") as f:
+                f.write('Metric,Value\n')
+                for k in self.myDict:
                     try:
-                        myDict[cDict[k]] = myDict.pop(k)
-                        f.write(cDict[k] + ',' + str(myDict[cDict[k]]) + '\n')
+                        self.myDict[cDict[k]] = self.myDict.pop(k)
+                        f.write(cDict[k] + ',' + str(self.myDict[cDict[k]]) + '\n')
                     except KeyError:
                         return 1
             return 0
