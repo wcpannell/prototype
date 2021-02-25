@@ -15,8 +15,8 @@ class CSVBuilder:
                 self.correctFormat = False
             if not isinstance(table[x], int):
                 self.correctFormat = False
-        self.fname = filename
-        self.myDict = table
+        self._fname = filename
+        self._myDict = table
 
     #This function will build the CSV file and return an integer value.
     #It will return 0 if it ran successfully, and 1 if it failed.
@@ -52,11 +52,11 @@ class CSVBuilder:
         #If the dictionary was determined to be of the correct format, then convert the keys
         #to their corresponding metric names, and write to a file.
         if self.correctFormat:
-            with open(self.fname,"a+") as f:
+            with open(self._fname,"a+") as f:
                 f.write('Metric,Value\n')
-                for k in self.myDict:
+                for k in self._myDict:
                     try:
-                        f.write(cDict[k] + ',' + str(self.myDict[k]) + '\n')
+                        f.write(cDict[k] + ',' + str(self._myDict[k]) + '\n')
                     except KeyError:
                         return 1
             return 0
