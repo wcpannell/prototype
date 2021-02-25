@@ -8,6 +8,7 @@ class CSVBuilder:
     #then set the correctFormat boolean to False, for when the build function is run.  Then, store the parameters
     #in their corresponding global variables.
     def __init__(self, filename: str, table: dict):
+        #This correctFormat value will be used later on to determine whether or not to proceed with building the CSV file
         self.correctFormat = True
         for x in table.keys():
             if not isinstance(x, str):
@@ -55,8 +56,7 @@ class CSVBuilder:
                 f.write('Metric,Value\n')
                 for k in self.myDict:
                     try:
-                        self.myDict[cDict[k]] = self.myDict.pop(k)
-                        f.write(cDict[k] + ',' + str(self.myDict[cDict[k]]) + '\n')
+                        f.write(cDict[k] + ',' + str(self.myDict[k]) + '\n')
                     except KeyError:
                         return 1
             return 0
