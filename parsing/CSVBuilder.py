@@ -1,5 +1,3 @@
-import csv
-
 #This class will take a dictionary of strings and integers and transform it into a CSV file with the correct converted metric names.
 class CSVBuilder:
 
@@ -35,7 +33,7 @@ class CSVBuilder:
                  'NNC8':'Number of Classes of nesting level 8',
                  'NNC9':'Number of Classes of nesting level 9',
                  'NNC10':'Number of Classes of nesting level 10',
-                 'NNC':'Numbre of Nested classes',
+                 'NNC':'Number of Nested classes',
                  'NOM':'Total Number of Methods',
                  'NIM':'Number of Inherited Methods',
                  'NLM':'Number of Local Methods',
