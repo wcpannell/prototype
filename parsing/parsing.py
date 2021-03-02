@@ -98,7 +98,7 @@ class AstParser:
         return _recursive_parse(self.tree, depth=0)
 
 
-def _add_dicts(fromdict: Dict[str, int], todict: Dict[str, int]):
+def add_dicts(fromdict: Dict[str, int], todict: Dict[str, int]):
     for key, value in fromdict.items():
         if key in todict.keys():
             todict[key] += value
@@ -146,18 +146,33 @@ def _recursive_parse(ast_obj: ast.AST, depth: int = 0) -> Dict[str, int]:
                 output["NOC"] += obj.value.end_lineno - obj.value.lineno + 1
 
         lower = _recursive_parse(obj, depth + 1)
-        _add_dicts(lower, output)
+        add_dicts(lower, output)
 
     return output
 
 
+class Parsing:
+    _LineParsing: LineParser
+    _AstParsing: AstParser
+
+    def __init__(self, filename: str) -> None:
+        self._LineParsing = LineParser(filename=filename)
+        self._AstParsing = AstParser(filename=filename)
+
+    def parse(self) -> Dict[str, int]:
+        self._metrics = self._AstParsing.parse()
+        add_dicts(self._LineParsing.parse(), self._metrics)
+        return self._metrics
+
+
 if __name__ == "__main__":
-    from sys import argv
+    from sys import argv, exit
 
     if len(argv) == 2:
         filename = argv[1]
     else:
         print("just call this with a filename for testing")
+        exit()
 
     lp = LineParser(filename)
     ap = AstParser(filename)
