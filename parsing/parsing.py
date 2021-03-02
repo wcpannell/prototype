@@ -1,7 +1,5 @@
 """
-This module handles parsing by line.
-
-Used for Line of Code Counts and Comment counts
+This module handles Python module parsing.
 """
 
 from typing import Dict, List
@@ -161,7 +159,11 @@ class Parsing:
 
     def parse(self) -> Dict[str, int]:
         self._metrics = self._AstParsing.parse()
+        # LineParser counts docstring comments as lines.
+        # Remove them so they are not double counted.
+        remove_lines = self._metrics["NOC"]
         add_dicts(self._LineParsing.parse(), self._metrics)
+        self._metrics["NOL"] -= remove_lines
         return self._metrics
 
 
